@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Notícia</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .news-item {
+            margin-bottom: 15px;
+        }
+        #image-preview {
+            max-width: 100%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="container mt-4">
+        <h1>Cadastrar Notícia</h1>
+        <p id="user-info" class="text-center text-muted"></p>
+        <button id="back-to-index" class="btn btn-secondary mb-3">Página Inicial</button>
+        <button id="back-to-news" class="btn btn-secondary mb-3">Notícias</button>
+    </header>
+
+    <main class="container mt-4">
+        <form id="news-form">
+            <div class="form-group">
+                <label for="user-name-input">Nome:</label>
+                <input type="text" class="form-control" id="user-name-input" name="user-name-input" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="user-email">Email:</label>
+                <input type="email" class="form-control" id="user-email" name="user-email" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Título:</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Conteúdo:</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="news-image-input">Imagem da Notícia (opcional):</label>
+                <input type="file" id="news-image-input" accept="image/*" capture="environment" class="form-control-file" style="display: none;">
+                <button type="button" id="open-camera" class="btn btn-info">Usar Câmera</button>
+                <button type="button" id="choose-file" class="btn btn-info">Escolher Arquivo</button>
+            </div>
+
+            <div class="form-group">
+                <img id="image-preview" src="" alt="Pré-visualização da imagem">
+            </div>
+
+            <input type="hidden" id="news-image-data" name="news-image-data">
+
+            
+            <button id="submit-news-button" type="submit" class="btn btn-primary">Cadastrar Notícia</button>
+        </form>
+
+        <div id="news-display" class="mt-4"></div>
+    </main>
+
+    <script src="main2.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const userName = params.get("name");
+            const userEmail = params.get("email");
+
+            document.querySelector("#user-name-input").value = userName || "";
+            document.querySelector("#user-email").value = userEmail || "";
+
+            document.querySelector("#user-info").textContent = `Usuário: ${userName || ""} | Email: ${userEmail || ""}`;
+
+            document.getElementById('back-to-index').addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+
+            document.getElementById('back-to-news').addEventListener('click', () => {
+                window.location.href = 'index3.html?email=' + encodeURIComponent(userEmail);
+            });
+        });
+    </script>
+</body>
+</html>

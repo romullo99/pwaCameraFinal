@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Notícias</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .news-item {
+            margin-bottom: 15px;
+        }
+        #image-preview {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header class="container mt-4">
+        <h1>Visualizar Notícias</h1>
+        <button id="back-to-index" class="btn btn-secondary mb-3">Página Inicial</button>
+    </header>
+
+    <main class="container mt-4">
+        <div id="user-info" class="mb-3 text-center"></div>
+        <div id="news-list" class="mt-4"></div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const userEmail = params.get("email");
+
+            document.querySelector("#user-info").textContent = `Email: ${userEmail || ""}`;
+
+            displayNews(userEmail); 
+
+            document.getElementById('back-to-index').addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        });
+
+        function displayNews(userEmail) {
+            const newsList = document.querySelector("#news-list");
+            newsList.innerHTML = ""; 
+
+            const news = getNewsFromLocalStorage();
+            news.forEach((item) => {
+                const newsItem = document.createElement("div");
+                newsItem.classList.add("news-item", "card", "mb-3", "p-3", "bg-light", "text-dark");
+
+                const deleteButton = userEmail === item.userEmail
+                    ? `<button class="btn btn-danger btn-sm float-right" onclick="deleteNews('${item.title}')">Excluir</button>`
+                    : '';
+
+                newsItem.innerHTML = `
+                    <h3 class="card-title">${item.title}</h3>
+                    <p class="card-text">${item.content}</p>
+                    ${item.image ? `<img src="${item.image}" alt="Imagem da notícia" style="max-width: 100%;">` : ''}
+                    <small class="text-muted">Publicado por: ${item.userName} (${item.userEmail})</small>
+                    ${deleteButton}
+                `;
+
+                newsList.appendChild(newsItem);
+            });
+
+            if (news.length === 0) {
+                newsList.innerHTML = "<p class='text-center'>Não há notícias cadastradas.</p>";
+            }
+        }
+
+        function getNewsFromLocalStorage() {
+            return localStorage.getItem("news") ? JSON.parse(localStorage.getItem("news")) : [];
+        }
+
+        function deleteNews(title) {
+            let news = getNewsFromLocalStorage();
+            news = news.filter(item => item.title !== title);
+            localStorage.setItem("news", JSON.stringify(news));
+
+            location.reload();
+        }
+    </script>
+</body>
+</html>

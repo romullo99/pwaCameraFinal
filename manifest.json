@@ -1,0 +1,21 @@
+{
+  "author": "Rômullo Moura",
+  "name": "Portal de Notícias",
+  "short_name": "Notícias",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#007bff",
+  "icons": [
+    {
+      "src": "/icon1922.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon5122.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
